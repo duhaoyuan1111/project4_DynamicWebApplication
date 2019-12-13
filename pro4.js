@@ -60,20 +60,7 @@ function Init(crime_api_url){
 		
 		
 	}
-	
-	var MARK = new Vue({
-		el:"#mark",
-		data:{
-			selected:[]
-			
-		},
-		methods:{
-			putMark:function(){
-				
-				console.log(this.selected);
-			}
-		}
-	});
+
 	
 	var TABLE = new Vue({
 		el:"#table",
@@ -242,6 +229,7 @@ function Init(crime_api_url){
 				xhttp.send();
 				xhttp.onreadystatechange=function(){
 					if(this.readyState==4 && this.status==200){
+						console.log(this.status);
 						console.log(JSON.parse(xhttp.responseText));
 						var address=JSON.parse(xhttp.responseText);
 						console.log(address[0].lat);
@@ -249,6 +237,7 @@ function Init(crime_api_url){
 						L.marker([address[0].lat, address[0].lon]).addTo(map).bindPopup(' crimes commited').openPopup();
 						//map.setView(goTo,15);	
 					}else{
+						console.log(this.status);
 						alert("Cannot find the address")
 					}
 				}			 
@@ -260,8 +249,24 @@ function Init(crime_api_url){
 	var codeDownloadName = [];
 	var neighborDownload = [];
 	
-	map.on("moveend",function(){	
-		MAP.$data.message = map.getCenter().lat+","+ map.getCenter().lng;
+	map.on("moveend",function(){
+		var templat =  map.getCenter().lat;
+		var templng=map.getCenter().lng;
+		var xhttp = new XMLHttpRequest();
+		var url= 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+templat+'&lon='+templng;
+		xhttp.open("GET",url);
+		xhttp.send();
+		xhttp.onreadystatechange=function(){
+			if(this.readyState==4 && this.status==200){
+				console.log(JSON.parse(xhttp.responseText).address.road);
+				
+				MAP.$data.message = JSON.parse(xhttp.responseText).address.road;
+			}else{
+				console.log("b");
+				MAP.$data.message = map.getCenter().lat+","+ map.getCenter().lng;
+			}
+		}		
+		//MAP.$data.message = map.getCenter().lat+","+ map.getCenter().lng;
 		var tem = [];
 		for (var key in MAP.$data.stpaulcrimes) {
 
@@ -381,29 +386,3 @@ function Init(crime_api_url){
 	});
 
 }
-
-/*
-							<td v-if="data.color==='#9ce4ff'" bgcolor='#9ce4ff'>{{data.date}}</td>
-							<td v-else-if="data.color==='#a8ffb0'" bgcolor='#a8ffb0'>{{data.date}}</td>
-							<td v-else-if="data.color==='#fa9f98'" bgcolor='#fa9f98'>{{data.date}}</td>
-							
-							<td v-if="data.color==='#9ce4ff'" bgcolor='#9ce4ff'>{{data.time}}</td>
-							<td v-else-if="data.color==='#a8ffb0'" bgcolor='#a8ffb0'>{{data.time}}</td>
-							<td v-else-if="data.color==='#fa9f98'" bgcolor='#fa9f98'>{{data.time}}</td>
-							
-							<td v-if="data.color==='#9ce4ff'" bgcolor='#9ce4ff'>{{data.code}}</td>
-							<td v-else-if="data.color==='#a8ffb0'" bgcolor='#a8ffb0'>{{data.code}}</td>
-							<td v-else-if="data.color==='#fa9f98'" bgcolor='#fa9f98'>{{data.code}}</td>	
-							
-							<td v-if="data.color==='#9ce4ff'" bgcolor='#9ce4ff'>{&nbsp;&nbsp;{data.police_grid}}</td>
-							<td v-else-if="data.color==='#a8ffb0'" bgcolor='#a8ffb0'>&nbsp;&nbsp;{{data.police_grid}}</td>
-							<td v-else-if="data.color==='#fa9f98'" bgcolor='#fa9f98'>&nbsp;&nbsp;{{data.police_grid}}</td>
-							
-							<td v-if="data.color==='#9ce4ff'" bgcolor='#9ce4ff'>&nbsp;&nbsp;{{data.neighborhood_number}}</td>
-							<td v-else-if="data.color==='#a8ffb0'" bgcolor='#a8ffb0'>&nbsp;&nbsp;{{data.neighborhood_number}}</td>
-							<td v-else-if="data.color==='#fa9f98'" bgcolor='#fa9f98'>&nbsp;&nbsp;{{data.neighborhood_number}}</td>
-							
-							<td v-if="data.color==='#9ce4ff'" bgcolor='#9ce4ff'>&nbsp;&nbsp;{{data.block}}</td>
-							<td v-else-if="data.color==='#a8ffb0'" bgcolor='#a8ffb0'>&nbsp;&nbsp;{{data.block}}</td>
-							<td v-else-if="data.color==='#fa9f98'" bgcolor='#fa9f98'>&nbsp;&nbsp;{{data.block}}</td>
-*/
