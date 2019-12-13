@@ -1,7 +1,8 @@
 body {
-	background-image:url('https://live.staticflickr.com/4073/4901401714_5908cdc78f_b.jpg'); 
+	background-image:url(../image/back.jpg); 
 	background-repeat:no-repeat;
-	background-size:1900px 600px;
+	background-size:1400px 500px;
+	background-position:0px 125px;
 }
 
 #map { 
