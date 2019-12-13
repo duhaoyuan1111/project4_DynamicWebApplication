@@ -1,5 +1,5 @@
-function Init(){
-	
+function Init(crime_api_url){
+	console.log(crime_api_url);
 	var map = L.map('map').setView([44.949642,-93.093124], 11);
 	map.setMaxBounds([[44.892444,-93.206001],[44.991957,-93.005204]]);
 
@@ -95,7 +95,7 @@ function Init(){
 			search:function(){
 				if(this.startdate != "" || this.enddate!=""){
 
-					var url = 'http://localhost:8000/incidents?start_date='+this.startdate+'&end_date='+this.enddate;
+					var url = crime_api_url+'/incidents?start_date='+this.startdate+'&end_date='+this.enddate;
 					var tempTable = [];
 					$.getJSON(url,(data)=>{
 						console.log(data)
@@ -292,20 +292,20 @@ function Init(){
 			
 	});
 	
-	$.getJSON('http://localhost:8000/codes',(data)=>{
+	$.getJSON(crime_api_url+'/codes',(data)=>{
 		$.each(data,function(i){
 			codeDownload.push(i);
 			codeDownloadName.push(data[i]);
 		});
 	});	
-	$.getJSON('http://localhost:8000/neighborhoods',(data)=>{
+	$.getJSON(crime_api_url+'/neighborhoods',(data)=>{
 		$.each(data,function(i){
 			neighborDownload.push(data[i]);
 			
 		});
 	});
 	
-	$.getJSON('http://localhost:8000/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
+	$.getJSON(crime_api_url+'/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
 		$.each(data,function(i){
 			var old = data[i].time;
 			var NEW = old.split(".");
@@ -329,11 +329,11 @@ function Init(){
 	});
 	
 	
-	$.getJSON('http://localhost:8000/incidents?start_date=2019-10-01&end_date=2019-10-31',(data111)=>{
+	$.getJSON(crime_api_url+'/incidents?start_date=2019-10-01&end_date=2019-10-31',(data111)=>{
 		MAP.$data.crimesBackUp= data111;
 	});
 	
-	$.getJSON('http://localhost:8000/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
+	$.getJSON(crime_api_url+'/incidents?start_date=2019-10-01&end_date=2019-10-31',(data)=>{
 		MAP.$data.stpaulcrimes = data;
 		
 		//console.log(TABLE.$data.tablelist);

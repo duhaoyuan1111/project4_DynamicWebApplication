@@ -21,12 +21,37 @@
 
 	<script src="pro4.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-	<script>
-	
-	
-	</script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="application/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="application/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- Prompt JavaScript - this can be moved to a separate .js file if desired -->
+    <script type="application/javascript">
+	function Prompt() {
+            $("#dialog-form").dialog({
+                autoOpen: true,
+                modal: true,
+                width: "360px",
+                buttons: {
+                    "Ok": function() {
+                        var prompt_input = $("#prompt_input");
+                        Init(prompt_input.val());
+                        $(this).dialog("close");
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+    </script>
 </head>
-<body onload="Init()">
+<body onload="Prompt()">
+	<!-- Prompt -->
+    <div id="dialog-form">
+        <label for="name">URL for St. Paul Crime API:</label>
+        <input type="text" id="prompt_input" class="text ui-widget-content ui-corner-all" style="width: 320px;"/>
+    </div>
+    <!-- End: Prompt -->
 	<div class="container">
 		<h1 style="color:#ff8503; font-family:Vladimir Script; font-size:6rem;">St. Paul Crime</h1>
 		<a href="aboutus.html" style="margin-left:750px;">About the Project</a>
