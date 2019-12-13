@@ -24,8 +24,8 @@
     "dependencies": {
         "express": "^4.17.1",
         "mssql": "^5.1.0",
-        "sqlite3": "^4.1.0"
-        "cors": "^2.8.5"
+        "sqlite3": "^4.1.0",
+        "cors": "^2.8.5",
         "leaflet": "^1.6.0"
     }
 }
