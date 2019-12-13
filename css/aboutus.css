@@ -1,31 +1,59 @@
 
+body{
+	background-color:#e4eef2;
+	
+}
+
+#link{
+	text-decoration:none;
+}
+
+#head{
+	font-family:Adele;
+	color:#5b5e5a;
+	border-bottom-color:#fcb138;
+	border-bottom-style:solid;
+	border-bottom-width:2px;
+	padding-bottom:5px;
+	
+}
+
+.paragraph{
+	font-family:Arial;
+	font-size:1.7rem;
+}
+
+.photo{
+	width:auto;
+	height:390px;
+	
+}
+
 #du {
+	font-family:Georgia;
+	background-color:#ebe6fc;
+	border:2px dotted #d7b9fa;
+}
+
+#shi{
+	font-family:Georgia;
+	background-color:#ebe6fc;
+	border:2px dotted #d7b9fa;
+}
+
+.font{
+	font-family:fantasy;
+	font-size:2.1rem;
+}
+
+#video{
+	height:370px;
+	width:460px;
+}
+
+.interestingfacts{
 	font-family:Arial;
-	font-size:1rem;
-	background-color:#8dc5fc;
-	width:400px;
-	
+	font-size:1.7rem;
+	border:2px dashed #e8af46;
 }
 
-#shi {
-	font-family:Arial;
-	font-size:1rem;
-	background-color:#fff782;
-	width:400px;
-	
-	margin-left:400px;
-	margin-top:-540px;
-}
-
-#video {
-	margin-top:400px;
-	width:500px;
-	height:500px;
-	
-}
-
-body {
-	background-image:url(../image/about.jpg);
-	background-repeat:repeat; 
-	background-size:contain;
-}
