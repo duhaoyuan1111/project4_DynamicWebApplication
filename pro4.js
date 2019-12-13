@@ -216,31 +216,39 @@ function Init(crime_api_url){
 					
 					var address = this.selected[this.selected.length-1].block.split(" ");
 					console.log(address[0]);
-					address[0][address[0].length]="0";
-					for(var i=0; i<address.length;i++){
-						newAddress=newAddress+address[i];
+					var temp = "";
+					for(var i =0; i<address[0].length-1;i++){
+						temp = temp+address[0][i];
 					}
+					temp = temp+"0";
+					for(var i=1; i<address.length;i++){
+						newAddress=newAddress+" "+address[i];
+					}
+					newAddress = temp+newAddress;
+				}else{
+					newAddress = this.selected[this.selected.length-1].block;
 				}
-				var newAddress = this.selected[this.selected.length-1].block;
 				console.log(newAddress);
 				var xhttp = new XMLHttpRequest();
 				var url= 'https://nominatim.openstreetmap.org/search?street='+address+"&city=St Paul&state=Minnesota&format=json";
-				xhttp.open("GET",url);
-				xhttp.send();
-				xhttp.onreadystatechange=function(){
-					if(this.readyState==4 && this.status==200){
-						console.log(this.status);
-						console.log(JSON.parse(xhttp.responseText));
-						var address=JSON.parse(xhttp.responseText);
-						console.log(address[0].lat);
-						console.log(address[0].lon);
-						L.marker([address[0].lat, address[0].lon]).addTo(map).bindPopup(' crimes commited').openPopup();
-						//map.setView(goTo,15);	
+				$.getJSON(url,(data)=>{
+					if(data[0]==null){
+						alert("Cannot find the address");
 					}else{
-						console.log(this.status);
-						alert("Cannot find the address")
+						var myIcon = L.icon({
+							iconUrl: 'https://cdn-images-1.medium.com/max/1200/1*Rgjfdz1KOsITXWI8NaEGog.png',
+							iconSize: [38, 39],
+							iconAnchor: [22, 94],
+							popupAnchor: [-3, -76],
+							/*shadowUrl: 'my-icon-shadow.png',
+							shadowSize: [68, 95],
+							shadowAnchor: [22, 94]*/
+						});						
+						var mark=L.marker([data[0].lat, data[0].lon], {icon: myIcon}).addTo(map).bindPopup(this.selected[this.selected.length-1].date+" ,"+this.selected[this.selected.length-1].time+" ,"+this.selected[this.selected.length-1].code).openPopup();
+						mark.on('mouseover' , function(e){map.removeLayer(mark);});
 					}
-				}			 
+					
+				});			
 			}
 		}
 		
