@@ -40,29 +40,32 @@
 	<div id="map"></div>
 	
 	<div class="container">
-		<div class="datetime">
-			<input v-model="startdate" placeholder= "start date">
-			<input v-model="enddate" placeholder= "end date">
-			<input v-model="starttime" placeholder= "start time">
-			<input v-model="endtime" placeholder= "end time">
-		</div>
 		<div id="table">
+			<div class="datetime">
+				<input v-model="startdate" placeholder= "start date">
+				<input v-model="enddate" placeholder= "end date">
+				<input v-model="starttime" placeholder= "start time">
+				<input v-model="endtime" placeholder= "end time">
+			</div>
 			<div class="checkedbox">
-				<input type="checkbox" id="Murder" value="Murder" v-model="checkedNames"> Murder </input>
+				<input type="checkbox" id="Vandalism" value="Vandalism" v-model="checkedNames"> Vandalism </input>
 				<input type="checkbox" id="Rape" value="Rape" v-model="checkedNames"> Rape </input>
 				<input type="checkbox" id="Robbery" value="Robbery" v-model="checkedNames"> Robbery </input>
-				<input type="checkbox" id="Aggravated Assault" value="Aggravated Assault" v-model="checkedNames"> Aggravated Assault </input>
+				<input type="checkbox" id="Agg. Assault" value="Agg. Assault" v-model="checkedNames"> Agg. Assault </input>
 				<input type="checkbox" id="Burglary" value="Burglary" v-model="checkedNames"> Burglary </input>
 				<input type="checkbox" id="Theft" value="Theft" v-model="checkedNames"> Theft </input>
-				<input type="checkbox" id="Motor Vehicle Theft" value="Motor Vehicle Theft" v-model="checkedNames"> Motor Vehicle Theft </input>
-				<input type="checkbox" id="Assault" value="Assault" v-model="checkedNames"> Assault </input>
-				<input type="checkbox" id="Arson" value="Arson" v-model="checkedNames"> Arson </input>				
-				<input type="checkbox" id="Criminal Damage to Property" value="Criminal Damage to Property" v-model="checkedNames"> Criminal Damage to Property </input>
-				<input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames"> Graffiti </input>
+				<input type="checkbox" id="Auto Theft" value="Auto Theft" v-model="checkedNames"> Auto Theft </input>
 				<input type="checkbox" id="Narcotics" value="Narcotics" v-model="checkedNames"> Narcotics </input>
-				<input type="checkbox" id="Weapons" value="Weapons" v-model="checkedNames"> Weapons </input>
+				<input type="checkbox" id="Arson" value="Arson" v-model="checkedNames"> Arson </input>				
+				<input type="checkbox" id="Discharge" value="Discharge" v-model="checkedNames"> Discharge </input>
+				<input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames"> Graffiti </input>
+				<input type="checkbox" id="Homicide" value="Homicide" v-model="checkedNames"> Homicide </input>
+				<input type="checkbox" id="Other" value="Other" v-model="checkedNames"> Other </input>
 				<input type="checkbox" id="Proactive Police Visit" value="Proactive Police Visit" v-model="checkedNames"> Proactive Police Visit </input>
 				<input type="checkbox" id="Community Engagement Event" value="Community Engagement Event" v-model="checkedNames"> Community Engagement Event </input>
+				<input type="checkbox" id="Sample Asasult Dom" value="Sample Asasult Dom" v-model="checkedNames"> Sample Asasult Dom </input>
+				<input type="checkbox" id="Sample Assault Dom" value="Sample Assault Dom" v-model="checkedNames"> Sample Assault Dom </input>
+				<input type="checkbox" id="Agg. Assault Dom" value="Agg. Assault Dom" v-model="checkedNames"> Agg. Assault Dom </input>
 			</div>
 			<div class="checkedbox">
 				<input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods"> Conway/Battlecreek/Highwood </input>
@@ -92,29 +95,33 @@
 				</thead>
 				<tbody>
 					<tr v-for="data in tablelist" >
-						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.date}}</td>
-						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.date}}</td>
-						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.date}}</td>
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.date}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.date}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.date}}</td>
 						
-						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.time}}</td>
-						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.time}}</td>
-						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.time}}</td>
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.time}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.time}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.time}}</td>
 						
-						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.code}}</td>
-						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.code}}</td>
-						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.code}}</td>
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.code}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.code}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.code}}</td>	
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.police_grid}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.police_grid}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.police_grid}}</td>
 						
-						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.police_grid}}</td>
-						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.police_grid}}</td>
-						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.police_grid}}</td>
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.neighborhood_number}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.neighborhood_number}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.neighborhood_number}}</td>
 						
-						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.neighborhood_number}}</td>
-						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.neighborhood_number}}</td>
-						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.neighborhood_number}}</td>
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Agg. Assault Dom'||data.incident=='Discharge'||data.incident=='Agg. Asasult Dom'||data.incident=='Sample Asasult Dom'||data.incident=='Agg. Assault'||data.incident=='Narcotics'" bgcolor='#9ce4ff'>{{data.block}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'||data.incident=='Auto Theft'||data.incident=='Graffiti'" bgcolor='#a8ffb0'>{{data.block}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'||data.incident=='Other'" bgcolor='#fa9f98'>{{data.block}}</td>							
 						
-						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.block}}</td>
-						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.block}}</td>
-						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98	'>{{data.block}}</td>
+						
+						<td >
+						 <button class="button-primary" v-on:click="selected.push(data)" @click = "addTo">mark</button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -128,7 +135,8 @@
 				<div class="three columns">
 					<div class="tuli" style="background-color:#fa9f98;"><p>Other Crimes</p></div>
 				</div>
-			</div>
+			</div> 
+
 		</div>
     </div>
 </body>

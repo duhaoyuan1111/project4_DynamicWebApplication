@@ -32,7 +32,7 @@ function Init(){
 				}else{
 					var xhttp = new XMLHttpRequest();
 					console.log(temp[0]);
-					var url= 'https://nominatim.openstreetmap.org/search?street='+temp[0]+"&city=St Paul&format=json";
+					var url= 'https://nominatim.openstreetmap.org/search?street='+temp[0]+"&city=St Paul&state=Minnesota&format=json";
 					xhttp.open("GET",url);
 					xhttp.send();
 					xhttp.onreadystatechange=function(){
@@ -53,7 +53,7 @@ function Init(){
 		
 	});
 	
-	function ifinsideArea(view_bounds, nei_lat, nei_lng){
+	function insideORoutside(view_bounds, nei_lat, nei_lng){
 		if(view_bounds._northEast.lat >= nei_lat && view_bounds._southWest.lat <= nei_lat && view_bounds._northEast.lng >= nei_lng && view_bounds._southWest.lng <= nei_lng){
 			return true;
 		}
@@ -61,9 +61,20 @@ function Init(){
 		
 	}
 	
+	var MARK = new Vue({
+		el:"#mark",
+		data:{
+			selected:[]
+			
+		},
+		methods:{
+			putMark:function(){
+				
+				console.log(this.selected);
+			}
+		}
+	});
 	
-	
-
 	var TABLE = new Vue({
 		el:"#table",
 		data:{
@@ -76,6 +87,7 @@ function Init(){
 			tablelist:[],
 			selectTable:[],
 			backup:[],
+			selected:[],
 			tableHead:['date','time','incident','police_grid','neighborhood','block']
 			
 		},
@@ -107,7 +119,7 @@ function Init(){
 						});
 						//console.log(tempTable);
 						this.tablelist = tempTable;
-						console.log(this.tablelist);
+						//console.log(this.tablelist);
 						if(this.starttime=="" ){
 							this.starttime="00:00:00";
 						}
@@ -124,7 +136,7 @@ function Init(){
 							var put = false;
 							var tabletime = this.tablelist[i].time.split(":");
 							var tabletimeInt = parseInt(tabletime[0]+tabletime[1]+tabletime[2]);
-							var inc = this.tablelist[i].incident.split(",")[0];
+							var inc = this.tablelist[i].incident
 							for(var j = 0; j<this.checkedNames.length;j++){
 								
 								if(inc==this.checkedNames[j]){
@@ -172,6 +184,7 @@ function Init(){
 
 					var temppp = this.endtime.split(":");
 					var end = parseInt(temppp[0]+temppp[1]+temppp[2]);
+					console.log(start+" "+end);
 					for(var i=0; i<this.tablelist.length;i++){
 						var put = false;
 						var tabletime = this.tablelist[i].time.split(":");
@@ -208,6 +221,37 @@ function Init(){
 					this.tablelist = this.selectTable;
 					this.selectTable = [];
 				}
+			},
+			addTo:function(){
+				console.log(this.selected[this.selected.length-1].block);
+				var newAddress = "";
+				if(!isNaN(this.selected[this.selected.length-1].block[0])){
+					
+					var address = this.selected[this.selected.length-1].block.split(" ");
+					console.log(address[0]);
+					address[0][address[0].length]="0";
+					for(var i=0; i<address.length;i++){
+						newAddress=newAddress+address[i];
+					}
+				}
+				var newAddress = this.selected[this.selected.length-1].block;
+				console.log(newAddress);
+				var xhttp = new XMLHttpRequest();
+				var url= 'https://nominatim.openstreetmap.org/search?street='+address+"&city=St Paul&state=Minnesota&format=json";
+				xhttp.open("GET",url);
+				xhttp.send();
+				xhttp.onreadystatechange=function(){
+					if(this.readyState==4 && this.status==200){
+						console.log(JSON.parse(xhttp.responseText));
+						var address=JSON.parse(xhttp.responseText);
+						console.log(address[0].lat);
+						console.log(address[0].lon);
+						L.marker([address[0].lat, address[0].lon]).addTo(map).bindPopup(' crimes commited').openPopup();
+						//map.setView(goTo,15);	
+					}else{
+						alert("Cannot find the address")
+					}
+				}			 
 			}
 		}
 		
@@ -221,11 +265,11 @@ function Init(){
 		var tem = [];
 		for (var key in MAP.$data.stpaulcrimes) {
 
-			var nei_lat = MAP.$data.centerOfNeighbor[MAP.$data.crimesBackUp[key].neighborhood_number-1][0];
-			var nei_lng = MAP.$data.centerOfNeighbor[MAP.$data.crimesBackUp[key].neighborhood_number-1][1];
+			var lat = MAP.$data.centerOfNeighbor[MAP.$data.crimesBackUp[key].neighborhood_number-1][0];
+			var lng = MAP.$data.centerOfNeighbor[MAP.$data.crimesBackUp[key].neighborhood_number-1][1];
 			var view_bounds = map.getBounds();
 
-			if (ifinsideArea(view_bounds, nei_lat, nei_lng)) {
+			if (insideORoutside(view_bounds, lat, lng)) {
 				tem.push(MAP.$data.stpaulcrimes[key]);
 				var number =parseInt( MAP.$data.crimesBackUp[key].neighborhood_number);
 				MAP.$data.stpaulcrimes[key].neighborhood_number = number;
