@@ -1,9 +1,10 @@
+<!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="utf-8" />
 	<title>Geocoding control</title>
 	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-
+	<script type="application/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<!-- Load Leaflet from CDN -->
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
 	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
@@ -11,6 +12,12 @@
 	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
 	integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
 	crossorigin=""></script>
+	
+	<!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="css/skeleton.css"/>
+	<link rel="stylesheet" href="css/normalize.css"/>
+	<link rel="stylesheet" href="css/du.css"/>
 
 	<script src="pro4.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -18,21 +25,111 @@
 	
 	
 	</script>
-
-	<style>
-		body { margin:0; padding:0; }
-		#map { position: absolute; top:100; bottom:0; right:0; left:0; height: 550px;
-		width: 550px;}
-		input{ width:300px;}
-		
-	</style>
 </head>
 <body onload="Init()">
-	<div id="map"></div>
-	<div id="app">
-		<input v-model="message" placeholder= "enter">
-		<bottom type="bottom" @click="submit">submit</bottom>
+	<div class="container">
+		<h1 style="color:#ff8503; font-family:Vladimir Script; font-size:6rem;">St. Paul Crime</h1>
+		<a href="aboutus.html" style="margin-left:750px;">About the Project</a>
+		
+		<div id="app">
+			<input class="search" v-model="message" placeholder= "enter" name="Map">
+			<button class="button-primary" type="button" @click="submit">Search</button>
+		</div>
 	</div>
-
+	
+	<div id="map"></div>
+	
+	<div class="container">
+		<div class="datetime">
+			<input v-model="startdate" placeholder= "start date">
+			<input v-model="enddate" placeholder= "end date">
+			<input v-model="starttime" placeholder= "start time">
+			<input v-model="endtime" placeholder= "end time">
+		</div>
+		<div id="table">
+			<div class="checkedbox">
+				<input type="checkbox" id="Murder" value="Murder" v-model="checkedNames"> Murder </input>
+				<input type="checkbox" id="Rape" value="Rape" v-model="checkedNames"> Rape </input>
+				<input type="checkbox" id="Robbery" value="Robbery" v-model="checkedNames"> Robbery </input>
+				<input type="checkbox" id="Aggravated Assault" value="Aggravated Assault" v-model="checkedNames"> Aggravated Assault </input>
+				<input type="checkbox" id="Burglary" value="Burglary" v-model="checkedNames"> Burglary </input>
+				<input type="checkbox" id="Theft" value="Theft" v-model="checkedNames"> Theft </input>
+				<input type="checkbox" id="Motor Vehicle Theft" value="Motor Vehicle Theft" v-model="checkedNames"> Motor Vehicle Theft </input>
+				<input type="checkbox" id="Assault" value="Assault" v-model="checkedNames"> Assault </input>
+				<input type="checkbox" id="Arson" value="Arson" v-model="checkedNames"> Arson </input>				
+				<input type="checkbox" id="Criminal Damage to Property" value="Criminal Damage to Property" v-model="checkedNames"> Criminal Damage to Property </input>
+				<input type="checkbox" id="Graffiti" value="Graffiti" v-model="checkedNames"> Graffiti </input>
+				<input type="checkbox" id="Narcotics" value="Narcotics" v-model="checkedNames"> Narcotics </input>
+				<input type="checkbox" id="Weapons" value="Weapons" v-model="checkedNames"> Weapons </input>
+				<input type="checkbox" id="Proactive Police Visit" value="Proactive Police Visit" v-model="checkedNames"> Proactive Police Visit </input>
+				<input type="checkbox" id="Community Engagement Event" value="Community Engagement Event" v-model="checkedNames"> Community Engagement Event </input>
+			</div>
+			<div class="checkedbox">
+				<input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods"> Conway/Battlecreek/Highwood </input>
+				<input type="checkbox" id="Greater East Side" value="Greater East Side" v-model="neighborhoods"> Greater East Side </input>
+				<input type="checkbox" id="West Side" value="West Side" v-model="neighborhoods"> West Side </input>
+				<input type="checkbox" id="Dayton's Bluff" value="Dayton's Bluff" v-model="neighborhoods"> Dayton's Bluff </input>
+				<input type="checkbox" id="Payne/Phalen" value="Payne/Phalen" v-model="neighborhoods"> Payne/Phalen </input>
+				<input type="checkbox" id="North End" value="North End" v-model="neighborhoods"> North End </input>
+				<input type="checkbox" id="Thomas/Dale(Frogtown)" value="Thomas/Dale(Frogtown)" v-model="neighborhoods"> Thomas/Dale(Frogtown) </input>
+				<input type="checkbox" id="Summit/University" value="Summit/University" v-model="neighborhoods"> Summit/University </input>
+				<input type="checkbox" id="West Seventh" value="West Seventh" v-model="neighborhoods"> West Seventh </input>
+				<input type="checkbox" id="Como" value="Como" v-model="neighborhoods"> Como </input>
+				<input type="checkbox" id="Hamline/Midway" value="Hamline/Midway" v-model="neighborhoods"> Hamline/Midway </input>
+				<input type="checkbox" id="St. Anthony" value="St. Anthony" v-model="neighborhoods"> St. Anthony </input>
+				<input type="checkbox" id="Union Park" value="Union Park" v-model="neighborhoods"> Union Park </input>
+				<input type="checkbox" id="Macalester-Groveland" value="Macalester-Groveland" v-model="neighborhoods"> Macalester-Groveland </input>
+				<input type="checkbox" id="Highland" value="Highland" v-model="neighborhoods"> Highland </input>
+				<input type="checkbox" id="Summit Hill" value="Summit Hill" v-model="neighborhoods"> Summit Hill </input>
+				<input type="checkbox" id="Capitol River" value="Capitol River" v-model="neighborhoods"> Capitol River </input>
+			</div>
+			<button id="subbutton" type="button" class="button-primary" @click="search">Submit</button>
+			<table id="listcrime">
+				<thead>
+					<tr>
+						<th v-for="head in tableHead">&nbsp;&nbsp;&nbsp;{{head}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="data in tablelist" >
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.date}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.date}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.date}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.time}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.time}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.time}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.code}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.code}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.code}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.police_grid}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.police_grid}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.police_grid}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.neighborhood_number}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.neighborhood_number}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98'>{{data.neighborhood_number}}</td>
+						
+						<td v-if="data.incident=='Homicide' ||data.incident=='Rape'||data.incident=='Assault'||data.incident=='Discharge'||data.incident=='Asasult'" bgcolor='#9ce4ff'>{{data.block}}</td>
+						<td v-else-if="data.incident=='Robbery' ||data.incident=='Theft'||data.incident=='Burglary'||data.incident=='Arson'||data.incident=='Vandalism'" bgcolor='#a8ffb0'>{{data.block}}</td>
+						<td v-else-if="data.incident=='Proactive Police Visit' ||data.incident=='Community Engagement Event'" bgcolor='#fa9f98	'>{{data.block}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="row">
+				<div class="three columns">
+					<div class="tuli" style="background-color:#9ce4ff;"><p>Violent Crimes</p></div>
+				</div>
+				<div  class="three columns">
+					<div class="tuli" style="background-color:#a8ffb0;"><p>Property Crimes</p></div>
+				</div>
+				<div class="three columns">
+					<div class="tuli" style="background-color:#fa9f98;"><p>Other Crimes</p></div>
+				</div>
+			</div>
+		</div>
+    </div>
 </body>
 </html>
