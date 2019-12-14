@@ -2,8 +2,31 @@ function Init(crime_api_url){
 	console.log(crime_api_url);
 	var map = L.map('map').setView([44.949642,-93.093124], 11);
 	map.setMaxBounds([[44.892444,-93.206001],[44.991957,-93.005204]]);
+	var English = new Vue({
+		el:"#english",
+		data:{
+			language:["zh-cn","eng"]
+		},
+		methods:{
+			change:function(){
+				var temp = this.language[0];
+				this.language[0] = this.language[1];
+				this.language[1] = temp;
+				console.log(this.language);
+				L.tileLayer('http://mt0.google.cn/vt/lyrs=m@160000000&hl='+English.$data.language[0]+'&gl=CN&src=app&y={y}&x={x}&z={z}&s=Ga', {
+					attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+					maxZoom: 18,
+					minZoom: 11,
+					id: 'mapbox/streets-v11',
+					accessToken: 'pk.eyJ1IjoiZHUwMDUxNjIiLCJhIjoiY2szdzY5YmhjMHE2dTNnbzIwYnJsdTJhdSJ9.FFgaw3eAe8gSuxnqk9vz7Q'
+				}).addTo(map);
+			}
+		}
+		
+	});
 
-	L.tileLayer('http://mt0.google.cn/vt/lyrs=m@160000000&hl=eng&gl=CN&src=app&y={y}&x={x}&z={z}&s=Ga', {
+
+	L.tileLayer('http://mt0.google.cn/vt/lyrs=m@160000000&hl='+English.$data.language[0]+'&gl=CN&src=app&y={y}&x={x}&z={z}&s=Ga', {
 		attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 		maxZoom: 18,
 		minZoom: 11,
@@ -13,7 +36,6 @@ function Init(crime_api_url){
 	
 	
 	var ladLong=map.getCenter();
-	
 	var MAP=new Vue({
 		el:"#app",
 		data:{
@@ -31,16 +53,16 @@ function Init(crime_api_url){
 					map.setView(goTo);	
 				}else{
 					var xhttp = new XMLHttpRequest();
-					console.log(temp[0]);
+					//console.log(temp[0]);
 					var url= 'https://nominatim.openstreetmap.org/search?street='+temp[0]+"&city=St Paul&state=Minnesota&format=json";
 					xhttp.open("GET",url);
 					xhttp.send();
 					xhttp.onreadystatechange=function(){
 						if(this.readyState==4 && this.status==200){
-							console.log(JSON.parse(xhttp.responseText));
+							//console.log(JSON.parse(xhttp.responseText));
 							var address=JSON.parse(xhttp.responseText);
-							console.log(address[0].lat);
-							console.log(address[0].lon);
+							//console.log(address[0].lat);
+							//console.log(address[0].lon);
 							var goTo = L.latLng(parseFloat(address[0].lat),parseFloat(address[0].lon));
 							map.setView(goTo,15);	
 						}
@@ -52,7 +74,7 @@ function Init(crime_api_url){
 		}
 		
 	});
-	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	function insideORoutside(view_bounds, nei_lat, nei_lng){
 		if(view_bounds._northEast.lat >= nei_lat && view_bounds._southWest.lat <= nei_lat && view_bounds._northEast.lng >= nei_lng && view_bounds._southWest.lng <= nei_lng){
 			return true;
@@ -85,7 +107,7 @@ function Init(crime_api_url){
 					var url = crime_api_url+'/incidents?start_date='+this.startdate+'&end_date='+this.enddate;
 					var tempTable = [];
 					$.getJSON(url,(data)=>{
-						console.log(data)
+						//console.log(data)
 						$.each(data,function(i){
 							var old = data[i].time;
 							var NEW = old.split(".");
@@ -123,27 +145,36 @@ function Init(crime_api_url){
 							var put = false;
 							var tabletime = this.tablelist[i].time.split(":");
 							var tabletimeInt = parseInt(tabletime[0]+tabletime[1]+tabletime[2]);
-							var inc = this.tablelist[i].incident
-							for(var j = 0; j<this.checkedNames.length;j++){
-								
-								if(inc==this.checkedNames[j]){
-									put=true;
+							var inc = this.tablelist[i].incident.split(",")[0];
+							if(this.checkedNames[0]=="all"){///////////////////////////////////////////////////////////////////
+								//console.log("a");
+								put=true;
+							}else{						
+								for(var j = 0; j<this.checkedNames.length;j++){
+									
+									if(inc==this.checkedNames[j]){
+										put=true;
+									}
+									
 								}
-								
 							}
-							
 							var put1 = false;
-							for(var k=0; k<this.neighborhoods.length;k++){
-								if(this.tablelist[i].neighborhood_number==this.neighborhoods[k]){
-									put1=true;
+							if(this.neighborhoods[0]=="all"){
+								//console.log("a");
+								put1=true;
+							}else{						
+								for(var k=0; k<this.neighborhoods.length;k++){
+									if(this.tablelist[i].neighborhood_number==this.neighborhoods[k]){
+										put1=true;
+									}
 								}
-							}
+							}////////////////////////////////////////////////////////////////////////
 							var put2 = false;
 							
 							if(tabletimeInt>=start && tabletimeInt<=end){
 								put2=true;
 							}
-							console.log(put+""+put1+""+put2);
+							//console.log(put+""+put1+""+put2);
 							if(put==true && put1==true && put2==true){
 								this.selectTable.push(this.tablelist[i]);
 							}
@@ -153,7 +184,7 @@ function Init(crime_api_url){
 						}
 						
 						this.tablelist = this.selectTable;
-						console.log(this.tablelist);
+						//console.log(this.tablelist);
 						this.selectTable = [];						
 					});
 
@@ -171,26 +202,35 @@ function Init(crime_api_url){
 
 					var temppp = this.endtime.split(":");
 					var end = parseInt(temppp[0]+temppp[1]+temppp[2]);
-					console.log(start+" "+end);
+					//console.log(start+" "+end);
 					for(var i=0; i<this.tablelist.length;i++){
 						var put = false;
 						var tabletime = this.tablelist[i].time.split(":");
 						var tabletimeInt = parseInt(tabletime[0]+tabletime[1]+tabletime[2]);
 						var inc = this.tablelist[i].incident.split(",")[0];
-						for(var j = 0; j<this.checkedNames.length;j++){
-							
-							if(inc==this.checkedNames[j]){
-								put=true;
+						if(this.checkedNames[0]=="all"){/////////////////////////////////////////////////////////
+							//console.log("a");
+							put=true;
+						}else{						
+							for(var j = 0; j<this.checkedNames.length;j++){
+								
+								if(inc==this.checkedNames[j]){
+									put=true;
+								}
+								
 							}
-							
 						}
-						
 						var put1 = false;
-						for(var k=0; k<this.neighborhoods.length;k++){
-							if(this.tablelist[i].neighborhood_number==this.neighborhoods[k]){
-								put1=true;
+						if(this.neighborhoods[0]=="all"){
+							//console.log("a");
+							put1=true;
+						}else{						
+							for(var k=0; k<this.neighborhoods.length;k++){
+								if(this.tablelist[i].neighborhood_number==this.neighborhoods[k]){
+									put1=true;
+								}
 							}
-						}
+						}/////////////////////////////////////////////////////////////////////////
 						var put2 = false;
 						
 						if(tabletimeInt>=start && tabletimeInt<=end){
@@ -210,12 +250,12 @@ function Init(crime_api_url){
 				}
 			},
 			addTo:function(){
-				console.log(this.selected[this.selected.length-1].block);
+				//console.log(this.selected[this.selected.length-1].block);
 				var newAddress = "";
 				if(!isNaN(this.selected[this.selected.length-1].block[0])){
 					
 					var address = this.selected[this.selected.length-1].block.split(" ");
-					console.log(address[0]);
+					//console.log(address[0]);
 					var temp = "";
 					for(var i =0; i<address[0].length-1;i++){
 						temp = temp+address[0][i];
@@ -228,7 +268,7 @@ function Init(crime_api_url){
 				}else{
 					newAddress = this.selected[this.selected.length-1].block;
 				}
-				console.log(newAddress);
+
 				var xhttp = new XMLHttpRequest();
 				var url= 'https://nominatim.openstreetmap.org/search?street='+address+"&city=St Paul&state=Minnesota&format=json";
 				$.getJSON(url,(data)=>{
@@ -266,11 +306,11 @@ function Init(crime_api_url){
 		xhttp.send();
 		xhttp.onreadystatechange=function(){
 			if(this.readyState==4 && this.status==200){
-				console.log(JSON.parse(xhttp.responseText).address.road);
+				//console.log(JSON.parse(xhttp.responseText).address.road);
 				
 				MAP.$data.message = JSON.parse(xhttp.responseText).address.road;
 			}else{
-				console.log("b");
+				//console.log("b");
 				MAP.$data.message = map.getCenter().lat+","+ map.getCenter().lng;
 			}
 		}		

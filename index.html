@@ -54,7 +54,10 @@
     <!-- End: Prompt -->
 	<div class="container">
 		<h1 style="color:#ff8503; font-family:Vladimir Script; font-size:6rem;">St. Paul Crime</h1>
-		<a href="aboutus.html" style="margin-left:750px; color:#FF0000;">About the Project</a>
+		<a href="aboutus.html" style="margin-left:750px;">About the Project</a>
+		<div id = "english">
+		<button @click = "change" style="margin-left:770px;">English/Chinese</button>
+		</div>
 		
 		<div id="app">
 			<input class="search" v-model="message" placeholder= "enter" name="Map">
@@ -91,6 +94,7 @@
 				<input type="checkbox" id="Sample Asasult Dom" value="Sample Asasult Dom" v-model="checkedNames"> Sample Asasult Dom </input>
 				<input type="checkbox" id="Sample Assault Dom" value="Sample Assault Dom" v-model="checkedNames"> Sample Assault Dom </input>
 				<input type="checkbox" id="Agg. Assault Dom" value="Agg. Assault Dom" v-model="checkedNames"> Agg. Assault Dom </input>
+				<input type="checkbox" id="Select all incident" value="all" v-model="checkedNames">Select All incident</input>
 			</div>
 			<div class="checkedbox">
 				<input type="checkbox" id="Conway/Battlecreek/Highwood" value="Conway/Battlecreek/Highwood" v-model="neighborhoods"> Conway/Battlecreek/Highwood </input>
@@ -110,6 +114,7 @@
 				<input type="checkbox" id="Highland" value="Highland" v-model="neighborhoods"> Highland </input>
 				<input type="checkbox" id="Summit Hill" value="Summit Hill" v-model="neighborhoods"> Summit Hill </input>
 				<input type="checkbox" id="Capitol River" value="Capitol River" v-model="neighborhoods"> Capitol River </input>
+				<input type="checkbox" id="Select all Neighborhoods" value="all" v-model="neighborhoods">Select All Neighborhoods</input>
 			</div>
 			<button id="subbutton" type="button" class="button-primary" @click="search">Submit</button>
 			<table id="listcrime">
